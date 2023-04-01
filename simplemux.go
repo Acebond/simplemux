@@ -32,7 +32,11 @@ func (mux *Mux) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 			return
 		}
 	}
-	mux.NotFound.ServeHTTP(w, req)
+	if mux.NotFound != nil {
+		mux.NotFound.ServeHTTP(w, req)
+	} else {
+		http.NotFoundHandler().ServeHTTP(w, req)
+	}
 }
 
 // Make sure the Router conforms with the http.Handler interface
